@@ -1,14 +1,24 @@
 repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
 
--- Hiển thị thông báo khi chạy script chỉ một lần và bật menu
+-- Hiển thị thông báo chờ 10 giây
 if not _G.NotificationShown then
     game.StarterGui:SetCore("SendNotification", {
         Title = "PhatDepZai Hub";  -- Tên Hub
-        Text = "Bin Béo !";  -- Thông báo
+        Text = "Waiting 10 seconds, Bin Béo!";  -- Thông báo
         Duration = 5;  -- Thời gian hiển thị (giây)
     })
     _G.NotificationShown = true  -- Đánh dấu rằng thông báo đã được hiển thị
 end
+
+-- Tạm dừng 10 giây trước khi tiếp tục
+wait(10)
+
+-- Hiển thị thông báo Bin Béo sau khi chờ 10 giây
+game.StarterGui:SetCore("SendNotification", {
+    Title = "PhatDepZai Hub";  -- Tên Hub
+    Text = "Bin Béo !";  -- Thông báo
+    Duration = 5;  -- Thời gian hiển thị (giây)
+})
 
 -- Kiểm tra URL và tải script từ GitHub
 local url = "https://raw.githubusercontent.com/KingShop952/PhatDepZai-Hub-v1.2/refs/heads/main/script_tphat_dz.lua"
