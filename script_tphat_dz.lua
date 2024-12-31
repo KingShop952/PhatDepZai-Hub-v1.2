@@ -1,138 +1,82 @@
-repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
+-- Delta X Client UI Framework (giả định)
 
--- Thông báo chờ 10 giây khi script bắt đầu
-if not _G.NotificationShown then
-    game.StarterGui:SetCore("SendNotification", {
-        Title = "PhatDepZai Hub";  -- Tên Hub
-        Text = "Waiting 10 seconds, Bin Béo!";  -- Thông báo
-        Duration = 5;  -- Thời gian hiển thị (giây)
-    })
-    _G.NotificationShown = true  -- Đánh dấu thông báo đã được hiển thị
-end
+local ui = require("ui")  -- Giả định có module UI trong Delta X Client
 
--- Tạm dừng 10 giây
-wait(10)
+-- Tạo logo đen để bật tắt
+local logoButton = ui.Button({id = "logoButton", label = "Logo", backgroundColor = "black", textColor = "white"})
+local notification = ui.Label({id = "notification", text = "Thông báo: bin béo", visible = false})
 
--- Hiển thị thông báo Bin Béo sau khi chờ 10 giây
-game.StarterGui:SetCore("SendNotification", {
-    Title = "PhatDepZai Hub";  -- Tên Hub
-    Text = "Bin Béo !";  -- Thông báo
-    Duration = 5;  -- Thời gian hiển thị (giây)
-})
+-- Mục chính (Main)
+local mainPanel = ui.Panel({id = "mainPanel", title = "Main"})
+local autoFarmButton = ui.Button({id = "autoFarm", label = "Auto Farm LV"})
+local autoBoneButton = ui.Button({id = "autoBone", label = "Auto Bone"})
+local autoKataButton = ui.Button({id = "autoKata", label = "Auto Kata"})
 
--- Kiểm tra URL và tải script từ GitHub
-local url = "https://raw.githubusercontent.com/KingShop952/PhatDepZai-Hub-v1.2/refs/heads/main/script_tphat_dz.lua"
-local success, result = pcall(function()
-    return game:HttpGet(url)
+-- Mục phụ (Subfarm)
+local subPanel = ui.Panel({id = "subPanel", title = "Subfarm"})
+local autoGetCDKButton = ui.Button({id = "autoGetCDK", label = "Auto Get CDK"})
+local autoFinishYamaButton = ui.Button({id = "autoFinishYama", label = "Auto Finish Yama"})
+local autoFinishTushitaButton = ui.Button({id = "autoFinishTushita", label = "Auto Finish Tushita"})
+local autoSoulGuitarButton = ui.Button({id = "autoSoulGuitar", label = "Auto SoulGuitar"})
+local autoSpawnCakePrinceButton = ui.Button({id = "autoSpawnCakePrince", label = "Auto Spawn Cake Prince"})
+
+-- Cấu hình các chức năng Auto
+autoFarmButton:onClick(function()
+    ui.alert("Auto Farm LV đang hoạt động...")
+    -- Thêm mã code tự động farm LV ở đây
 end)
 
--- Nếu URL không tải được hoặc có lỗi, hiển thị lỗi
-if not success then
-    print("Lỗi khi tải script từ GitHub: " .. result)
-    return
-end
-
--- Nếu tải script thành công, chạy nó
-loadstring(result)()
-
--- Tải thư viện giao diện UI từ GitHub
-local uiLibraryUrl = "https://raw.githubusercontent.com/KingShop952/PhatDepZai-Hub-v1.2/refs/heads/main/UI-Library.lua"
-local uiSuccess, uiResult = pcall(function()
-    return game:HttpGet(uiLibraryUrl)
+autoBoneButton:onClick(function()
+    ui.alert("Auto Bone đang hoạt động...")
+    -- Thêm mã code tự động làm bone ở đây
 end)
 
--- Nếu không tải được thư viện UI, thông báo lỗi
-if not uiSuccess then
-    print("Lỗi khi tải thư viện UI: " .. uiResult)
-    return
-end
-
--- Nếu thư viện UI tải thành công, chạy nó
-loadstring(uiResult)()
-
--- Tạo cửa sổ giao diện
-local window = library:CreateWindow("PhatDepZai Hub", Color3.fromRGB(0, 0, 0)) -- Tên Hub là "PhatDepZai Hub" với logo màu đen
-local mainTab = window:CreateTab("Main") -- Tab chính
-
--- Hiển thị menu ngay lập tức khi chạy script
-window.Gui.Enabled = true
-
--- Các chức năng trong Main
-mainTab:CreateLabel("Status: Đang cày") -- Hiển thị status
-mainTab:CreateLabel("Chức năng: Auto Rejoin") -- Hiển thị chức năng
-
-mainTab:CreateButton("Auto Rejoin", function()
-    print("Auto Rejoin Started")
-    -- Thêm code Auto Rejoin
-    while wait(10) do
-        -- Code để auto rejoin
-        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer) -- Ví dụ sử dụng teleport để tham gia lại
-    end
+autoKataButton:onClick(function()
+    ui.alert("Auto Kata đang hoạt động...")
+    -- Thêm mã code tự động kata ở đây
 end)
 
-mainTab:CreateButton("Auto Farm Max Level (2550)", function()
-    print("Auto Farm Max Level Started")
-    -- Cài đặt Auto Farm Max Level
-    local levelMax = 2550 -- Level tối đa là 2550
-    local currentLevel = game.Players.LocalPlayer.Data.Level.Value
-    local godHuman = game.Players.LocalPlayer.Data:FindFirstChild("GodHuman") -- Kiểm tra xem người chơi đã có God Human chưa
-
-    if godHuman then
-        print("Bạn đã có God Human, không cần farm nữa!")
-        return -- Nếu đã có God Human, dừng lại và không làm gì nữa
-    end
-
-    while wait(1) do
-        currentLevel = game.Players.LocalPlayer.Data.Level.Value
-
-        -- Kiểm tra nếu đã đạt level tối đa
-        if currentLevel >= levelMax then
-            print("Đã đạt level tối đa: " .. levelMax)
-            break
-        end
-
-        print("Đang farm để đạt level tối đa: " .. currentLevel)
-        -- Thêm mã farm cho level, ví dụ: sử dụng các kỹ năng, farm boss, hoặc thu thập XP.
-        -- farmXP() -- Bạn cần thêm mã farm XP hoặc boss tùy vào yêu cầu game
-    end
+-- Các chức năng Subfarm
+autoGetCDKButton:onClick(function()
+    ui.alert("Auto Get CDK đang hoạt động...")
+    -- Thêm mã code tự động lấy CDK ở đây
 end)
 
-mainTab:CreateButton("Get God Human", function()
-    print("Getting God Human...")
-    -- Cài đặt code để lấy God Human
-    local godHuman = game.Players.LocalPlayer.Data:FindFirstChild("GodHuman")
-    
-    if godHuman then
-        print("Bạn đã có God Human!")
+autoFinishYamaButton:onClick(function()
+    ui.alert("Auto Finish Yama đang hoạt động...")
+    -- Thêm mã code tự động finish Yama ở đây
+end)
+
+autoFinishTushitaButton:onClick(function()
+    ui.alert("Auto Finish Tushita đang hoạt động...")
+    -- Thêm mã code tự động finish Tushita ở đây
+end)
+
+autoSoulGuitarButton:onClick(function()
+    ui.alert("Auto Soul Guitar đang hoạt động...")
+    -- Thêm mã code tự động Soul Guitar ở đây
+end)
+
+autoSpawnCakePrinceButton:onClick(function()
+    ui.alert("Auto Spawn Cake Prince đang hoạt động...")
+    -- Thêm mã code tự động Spawn Cake Prince ở đây
+end)
+
+-- Bật tắt logo và thông báo bin béo
+logoButton:onClick(function()
+    if notification.visible then
+        notification.visible = false
+        ui.alert("Logo tắt")
     else
-        -- Tiến hành thực hiện các hành động để lấy God Human
-        print("Đang lấy God Human...")
-        -- Code để đạt God Human, ví dụ: Hoàn thành quest, farm điểm, hoặc trang bị
-        -- giả sử script sử dụng hàm "farmGodHuman()"
-        -- farmGodHuman()  
+        notification.visible = true
+        ui.alert("Logo bật")
     end
 end)
 
--- Logo màu đen và chạm màn hình để bật/tắt menu
-local UIS = game:GetService("UserInputService")
-local gui = window.Gui -- Lưu GUI của bạn trong biến này
-local logo = Instance.new("ImageLabel")
-logo.Size = UDim2.new(0, 50, 0, 50)
-logo.Position = UDim2.new(0, 0, 0, 50)
-logo.Image = "https://i.imgur.com/MWmltGP.jpeg"  -- Thay đổi URL logo ở đây
-logo.Parent = game.CoreGui
-
--- Ẩn/hiện menu và logo khi chạm vào màn hình
-local function toggleMenu()
-    gui.Enabled = not gui.Enabled -- Ẩn/hiện giao diện
-    logo.Visible = gui.Enabled -- Ẩn/hiện logo khi menu bật/tắt
-end
-
--- Đảm bảo menu và logo luôn bật khi script chạy
-gui.Enabled = true
-logo.Visible = true
-
--- Kết nối sự kiện chạm màn hình để bật/tắt menu
-UIS.TouchStarted:Connect(function(input)
-    toggleMenu()  -- Khi chạm vào màn hình, gọi hàm toggleMenu để bật/tắt menu
-end)
+-- Hiển thị UI
+ui.show({
+    logoButton,
+    notification,
+    mainPanel,
+    subPanel
+})
