@@ -182,6 +182,55 @@ local ReturnToCurrentServerButton = TabFPS:AddButton({
     end
 })
   
-    local TabFarming = RimusHub:CreateTab({
-    	Title = "Farm Level", 
-    
+-- Tạo tab "Farming"
+local TabFarm = RimusHub:CreateTab({
+    Name = "Farm Level",
+    Icon = "rbxassetid://100756646036568"
+})
+
+-- Mục Auto Get CDK
+local AutoGetCDKButton = TabFarm:AddButton({
+    Title = "Auto Get CDK",
+    Content = "Tự động nhận CDK khi có sẵn",
+    Icon = "rbxassetid://100756646036568",
+    Callback = function()
+        -- Code thực hiện Auto Get CDK
+        local function getCDK()
+            -- Thực hiện các hành động cần thiết để nhận CDK (tùy vào game Blox Fruit)
+            -- Ví dụ, bạn có thể sử dụng các thao tác game như di chuyển hoặc kích hoạt một sự kiện trong game
+            print("Đang lấy CDK...")
+            -- Code thực hiện thao tác lấy CDK vào game
+            -- Ví dụ: game.Workspace.CDKButton.Click()
+        end
+        
+        -- Chạy hàm getCDK liên tục nếu cần
+        while true do
+            getCDK()
+            wait(5) -- Mỗi 5 giây kiểm tra lại
+        end
+    end
+})
+
+-- Mục Auto Soul Guitar
+local AutoSoulGuitarButton = TabFarm:AddButton({
+    Title = "Auto Soul Guitar",
+    Content = "Tự động lấy Soul Guitar",
+    Icon = "rbxassetid://100756646036568",
+    Callback = function()
+        -- Code thực hiện Auto Soul Guitar
+        local function getSoulGuitar()
+            -- Thực hiện các hành động cần thiết để nhận Soul Guitar (tùy vào game Blox Fruit)
+            -- Ví dụ, bạn có thể sử dụng các thao tác game như di chuyển hoặc kích hoạt một sự kiện trong game
+            print("Đang lấy Soul Guitar...")
+            -- Code thực hiện thao tác lấy Soul Guitar vào game
+            -- Ví dụ: game.Workspace.SoulGuitarItem.Click()
+        end
+        
+        -- Chạy hàm getSoulGuitar liên tục nếu cần
+        while true do
+            getSoulGuitar()
+            wait(5) -- Mỗi 5 giây kiểm tra lại
+        end
+    end
+})
+
