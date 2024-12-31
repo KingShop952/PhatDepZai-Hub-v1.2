@@ -119,7 +119,7 @@ local gui = window.Gui -- Lưu GUI của bạn trong biến này
 local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 50, 0, 50)
 logo.Position = UDim2.new(0, 0, 0, 50)
-logo.Image = "https://your-logo-url.com"  -- Thay đổi URL logo ở đây
+logo.Image = "https://i.imgur.com/MWmltGP.jpeg"  -- Thay đổi URL logo ở đây
 logo.Parent = game.CoreGui
 
 -- Ẩn/hiện menu và logo khi chạm vào màn hình
