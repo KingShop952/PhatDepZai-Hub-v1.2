@@ -98,7 +98,7 @@ local StopButton = Tab1:AddButton({
 
 -- Đây là tab FPS đã được tao tối ưu mượt mà 
 local TabFPS = RimusHub:CreateTab({
-    Name = "Tab FPS",
+    Name = "Tab Giảm Lag",
     Icon = "rbxassetid://100756646036568"
 })
 
