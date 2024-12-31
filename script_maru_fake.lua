@@ -1,29 +1,54 @@
-local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+-- PhatDepZai Hub Script
+-- Giao diện giống Maru Hub, với các chức năng Main và Subfarm
+local Library = loadstring(game:HttpGet("https://pastebin.com/raw/FsJak6AT"))() -- Thư viện giao diện
 
-local Window = Rayfield:CreateWindow({
-    Name = "PhatDepZai Hub - Blox Fruits",
-    LoadingTitle = "PhatDepZai Hub Loading...",
-    LoadingSubtitle = "Blox Fruits Script",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "PhatDepZaiHub",
-        FileName = "Config"
-    },
-    Discord = {
-        Enabled = true,
-        Invite = "YOUR_DISCORD_INVITE", -- Thay bằng link Discord của bạn
-        RememberJoins = true
-    },
-    KeySystem = true, -- Bật hệ thống key nếu muốn bảo mật script
-    KeySettings = {
-        Title = "PhatDepZai Hub Key System",
-        Subtitle = "Nhập Key Để Tiếp Tục",
-        Note = "Key có thể được tìm thấy tại Discord",
-        FileName = "PhatKey",
-        SaveKey = true,
-        GrabKeyFromSite = false,
-        Key = {"123456"} -- Thay bằng key của bạn
-    }
-})
+-- Tạo giao diện chính
+local Window = Library:CreateWindow("PhatDepZai Hub") -- Tên giao diện
+local MainTab = Window:CreateTab("Main") -- Tab chính
+local SubTab = Window:CreateTab("Subfarm") -- Tab phụ
 
-local MainTab = Window:CreateTab("Chức Năng Chính", 4483362458) -- Tab chính
+-- Chức năng trong Main Tab
+MainTab:CreateButton("Auto Farm LV", function()
+    print("Đang kích hoạt Auto Farm LV...")
+    -- Thêm logic Auto Farm LV tại đây
+end)
+
+MainTab:CreateButton("Auto Bone", function()
+    print("Đang kích hoạt Auto Bone...")
+    -- Thêm logic Auto Bone tại đây
+end)
+
+MainTab:CreateButton("Auto Kata", function()
+    print("Đang kích hoạt Auto Kata...")
+    -- Thêm logic Auto Kata tại đây
+end)
+
+-- Chức năng trong Subfarm Tab
+SubTab:CreateButton("Auto Get CDK", function()
+    print("Đang kích hoạt Auto Get CDK...")
+    -- Thêm logic Auto Get CDK tại đây
+end)
+
+SubTab:CreateButton("Auto Finish Yama", function()
+    print("Đang kích hoạt Auto Finish Yama...")
+    -- Thêm logic Auto Finish Yama tại đây
+end)
+
+SubTab:CreateButton("Auto Finish Tushita", function()
+    print("Đang kích hoạt Auto Finish Tushita...")
+    -- Thêm logic Auto Finish Tushita tại đây
+end)
+
+SubTab:CreateButton("Auto Soul Guitar", function()
+    print("Đang kích hoạt Auto Soul Guitar...")
+    -- Thêm logic Auto Soul Guitar tại đây
+end)
+
+SubTab:CreateButton("Auto Spawn Cake Prince", function()
+    print("Đang kích hoạt Auto Spawn Cake Prince...")
+    -- Thêm logic Auto Spawn Cake Prince tại đây
+end)
+
+-- Thêm logo bật tắt giao diện
+Library:SetWatermark("PhatDepZai Hub") -- Hiển thị watermark
+Library:Notify("Bin béo", "Giao diện đã sẵn sàng!") -- Thông báo
