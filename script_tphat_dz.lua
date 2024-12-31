@@ -1,11 +1,14 @@
 repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
 
--- Hiển thị thông báo khi chạy script và bật menu
-game.StarterGui:SetCore("SendNotification", {
-    Title = "PhatDepZai Hub";  -- Tên Hub
-    Text = "Bin Béo !";  -- Thông báo
-    Duration = 5;  -- Thời gian hiển thị (giây)
-})
+-- Hiển thị thông báo khi chạy script chỉ một lần và bật menu
+if not _G.NotificationShown then
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "PhatDepZai Hub";  -- Tên Hub
+        Text = "Bin Béo !";  -- Thông báo
+        Duration = 5;  -- Thời gian hiển thị (giây)
+    })
+    _G.NotificationShown = true  -- Đánh dấu rằng thông báo đã được hiển thị
+end
 
 -- Kiểm tra URL và tải script từ GitHub
 local url = "https://raw.githubusercontent.com/KingShop952/PhatDepZai-Hub-v1.2/refs/heads/main/script_tphat_dz.lua"
@@ -105,8 +108,16 @@ local UIS = game:GetService("UserInputService")
 local toggleKey = Enum.KeyCode.RightShift -- Phím để bật/tắt menu
 local gui = window.Gui -- Lưu GUI của bạn trong biến này
 
+-- Thêm logo ở bên trái và bật/tắt menu
+local logo = Instance.new("ImageLabel")
+logo.Size = UDim2.new(0, 50, 0, 50)
+logo.Position = UDim2.new(0, 0, 0, 50)
+logo.Image = "https://i.imgur.com/MWmltGP.jpeg"  -- Thay đổi URL logo ở đây
+logo.Parent = game.CoreGui
+
 UIS.InputBegan:Connect(function(input)
     if input.KeyCode == toggleKey then
         gui.Enabled = not gui.Enabled -- Ẩn/hiện giao diện
+        logo.Visible = gui.Enabled -- Ẩn/hiện logo khi menu bật/tắt
     end
 end)
