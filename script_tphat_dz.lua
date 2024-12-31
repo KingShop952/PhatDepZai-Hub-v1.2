@@ -7,6 +7,16 @@ game.StarterGui:SetCore("SendNotification", {
     Duration = 5;  -- Thời gian hiển thị (giây)
 })
 
+-- Sử dụng pcall để đảm bảo loadstring hoạt động mà không gây lỗi
+local success, message = pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/KingShop952/PhatDepZai-Hub-v1.2/refs/heads/main/script_tphat_dz.lua"))()
+end)
+
+-- Nếu có lỗi xảy ra, thông báo lỗi sẽ được in ra
+if not success then
+    print("Lỗi khi tải script: " .. message)
+end
+
 -- Tải thư viện giao diện UI
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/KingShop952/PhatDepZai-Hub-v1.2/refs/heads/main/UI-Library.lua"))()
 
@@ -74,4 +84,3 @@ UIS.InputBegan:Connect(function(input)
         gui.Enabled = not gui.Enabled -- Ẩn/hiện giao diện
     end
 end)
-
