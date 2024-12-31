@@ -3,8 +3,8 @@
 local RimusLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Duc18-code/scriptducv3/refs/heads/main/UInew.lua"))()
 local Notify = RimusLib:MakeNotify({
     Title = "Notification",
-    Content = "Content",
-    Image = "rbxassetid://119410653467206",
+    Content = "Anh Phát Bỏ Con",
+    Image = "rbxassetid://100756646036568",
     Time = 1,
     Delay = 5
 })
@@ -12,12 +12,12 @@ local Notify = RimusLib:MakeNotify({
 local RimusHub = RimusLib:MakeGui({
     NameHub = "PhatDepZai Hub",
     NameGam = "     [Chat]",
-    Icon = "rbxassetid://119410653467206"
+    Icon = "rbxassetid://100756646036568"
 })
 
 local Tab1 = RimusHub:CreateTab({
     Name = "Tab Chat",
-    Icon = "rbxassetid://119410653467206"
+    Icon = "rbxassetid://100756646036568"
 })
 
 -- Mục Spam Chat Đã Được Tao Bố Trí Thêm
@@ -28,7 +28,7 @@ local delayTime = 0 -- Mặc định là 0, tức là không có thời gian ch�
 -- Khung nhập văn bản
 local Input = Tab1:AddInput({
     Title = "Nhập câu chat",
-    Icon = "rbxassetid://16532766392",
+    Icon = "rbxassetid://100756646036568",
     Callback = function(Value)
         spamText = Value -- Lưu trữ câu chat khi người dùng nhập
         print("Câu chat đã nhập: " .. spamText)
@@ -57,7 +57,7 @@ local Dropdown = Tab1:AddDropdown({
 local Button = Tab1:AddButton({
     Title = "Start Spam Chat",
     Content = "Bắt đầu spam",
-    Icon = "rbxassetid://16520422220",
+    Icon = "rbxassetid://100756646036568",
     Callback = function()
         if spamText ~= "" then
             isSpamming = true
@@ -89,7 +89,7 @@ local Button = Tab1:AddButton({
 local StopButton = Tab1:AddButton({
     Title = "Stop Spam Chat",
     Content = "Dừng spam",
-    Icon = "rbxassetid://16520422220",
+    Icon = "rbxassetid://100756646036568",
     Callback = function()
         isSpamming = false
         print("Đã dừng spam")
@@ -99,14 +99,14 @@ local StopButton = Tab1:AddButton({
 -- Đây là tab FPS đã được tao tối ưu mượt mà 
 local TabFPS = RimusHub:CreateTab({
     Name = "Tab FPS",
-    Icon = "rbxassetid://119410653467206"
+    Icon = "rbxassetid://100756646036568"
 })
 
 -- Mục Giảm FPS nek
 local ReduceFPSButton = TabFPS:AddButton({
     Title = "Giảm FPS",
     Content = "Tối ưu hóa FPS bằng cách xóa hoạt ảnh và làm mờ màu",
-    Icon = "rbxassetid://16520422220",
+    Icon = "rbxassetid://100756646036568",
     Callback = function()
         -- Xóa hoạt ảnh và làm mờ màu trong game hạn chế bị kick
         for _, v in pairs(game.Workspace:GetDescendants()) do
@@ -133,7 +133,7 @@ local ReduceFPSButton = TabFPS:AddButton({
 local ServerHopButton = TabFPS:AddButton({
     Title = "Server Hop",
     Content = "Chuyển sang server khác có ít người chơi và FPS ổn định",
-    Icon = "rbxassetid://16520422220",
+    Icon = "rbxassetid://100756646036568",
     Callback = function()
         -- Hàm để tìm và tham gia server có ít người chơi hơn
         local HttpService = game:GetService("HttpService")
@@ -169,7 +169,7 @@ local ServerHopButton = TabFPS:AddButton({
 local ReturnToCurrentServerButton = TabFPS:AddButton({
     Title = "Vô Lại Server",
     Content = "Quay lại server hiện tại",
-    Icon = "rbxassetid://16520422220",
+    Icon = "rbxassetid://100756646036568",
     Callback = function()
         -- Sử dụng TeleportService để vào lại chính server hiện tại
         local TPS = game:GetService("TeleportService")
