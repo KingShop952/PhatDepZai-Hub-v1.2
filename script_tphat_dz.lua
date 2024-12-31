@@ -1,16 +1,16 @@
 repeat wait() until game:IsLoaded() and game.Players.LocalPlayer
 
--- Hiển thị thông báo chờ 10 giây
+-- Thông báo chờ 10 giây khi script bắt đầu
 if not _G.NotificationShown then
     game.StarterGui:SetCore("SendNotification", {
         Title = "PhatDepZai Hub";  -- Tên Hub
         Text = "Waiting 10 seconds, Bin Béo!";  -- Thông báo
         Duration = 5;  -- Thời gian hiển thị (giây)
     })
-    _G.NotificationShown = true  -- Đánh dấu rằng thông báo đã được hiển thị
+    _G.NotificationShown = true  -- Đánh dấu thông báo đã được hiển thị
 end
 
--- Tạm dừng 10 giây trước khi tiếp tục
+-- Tạm dừng 10 giây
 wait(10)
 
 -- Hiển thị thông báo Bin Béo sau khi chờ 10 giây
@@ -113,21 +113,26 @@ mainTab:CreateButton("Get God Human", function()
     end
 end)
 
--- Logo màu đen và phím tắt menu
+-- Logo màu đen và chạm màn hình để bật/tắt menu
 local UIS = game:GetService("UserInputService")
-local toggleKey = Enum.KeyCode.RightShift -- Phím để bật/tắt menu
 local gui = window.Gui -- Lưu GUI của bạn trong biến này
-
--- Thêm logo ở bên trái và bật/tắt menu
 local logo = Instance.new("ImageLabel")
 logo.Size = UDim2.new(0, 50, 0, 50)
 logo.Position = UDim2.new(0, 0, 0, 50)
-logo.Image = "https://i.imgur.com/MWmltGP.jpeg"  -- Thay đổi URL logo ở đây
+logo.Image = "https://your-logo-url.com"  -- Thay đổi URL logo ở đây
 logo.Parent = game.CoreGui
 
-UIS.InputBegan:Connect(function(input)
-    if input.KeyCode == toggleKey then
-        gui.Enabled = not gui.Enabled -- Ẩn/hiện giao diện
-        logo.Visible = gui.Enabled -- Ẩn/hiện logo khi menu bật/tắt
-    end
+-- Ẩn/hiện menu và logo khi chạm vào màn hình
+local function toggleMenu()
+    gui.Enabled = not gui.Enabled -- Ẩn/hiện giao diện
+    logo.Visible = gui.Enabled -- Ẩn/hiện logo khi menu bật/tắt
+end
+
+-- Đảm bảo menu và logo luôn bật khi script chạy
+gui.Enabled = true
+logo.Visible = true
+
+-- Kết nối sự kiện chạm màn hình để bật/tắt menu
+UIS.TouchStarted:Connect(function(input)
+    toggleMenu()  -- Khi chạm vào màn hình, gọi hàm toggleMenu để bật/tắt menu
 end)
