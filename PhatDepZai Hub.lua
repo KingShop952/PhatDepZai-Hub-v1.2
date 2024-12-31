@@ -181,3 +181,7 @@ local ReturnToCurrentServerButton = TabFPS:AddButton({
         print("Đang quay lại server hiện tại...")
     end
 })
+  
+    local TabFarming = RimusHub:CreateTab({
+    	Title = "Farm Level", 
+    
