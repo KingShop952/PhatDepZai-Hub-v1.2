@@ -1,6 +1,6 @@
 local RimusLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Duc18-code/scriptducv3/refs/heads/main/UInew.lua"))()
 local Notify = RimusLib:MakeNotify({
-    Title = "Notification",
+    Title = "Thông Báo",
     Content = "Anh Phát Bỏ Con",
     Image = "rbxassetid://100756646036568",
     Time = 1,
@@ -247,7 +247,6 @@ local AutoSgtButton = TabFarming:AddButton({
     end
 })
 
--- Tab Farm Level
 local TabFarm = RimusHub:CreateTab({
     Name = "Tab Farm Level",
     Icon = "rbxassetid://100756646036568"
@@ -258,21 +257,10 @@ local isFarming = false -- Biến kiểm tra trạng thái farm
 local farmingAreas = {
     {level = 1, name = "Bandit", position = Vector3.new(1059, 16, 1532)},
     {level = 15, name = "Monkey", position = Vector3.new(-1335, 6, 2323)},
-    {level = 30, name = "Gorilla", position = Vector3.new(-1167, 6, 2146)},
-    {level = 50, name = "Pirate", position = Vector3.new(-1159, 43, 3829)},
-    {level = 120, name = "Marine", position = Vector3.new(-4864, 6, 4285)},
-    {level = 220, name = "Yeti", position = Vector3.new(1407, 112, -1224)},
-    {level = 300, name = "Sky Bandit", position = Vector3.new(-4958, 369, -2791)},
-    {level = 625, name = "Fishman", position = Vector3.new(6113, 6, -1642)},
-    {level = 700, name = "Raider", position = Vector3.new(-5382, 6, 8416)},
-    {level = 850, name = "Mercenary", position = Vector3.new(-5405, 6, 9046)},
-    {level = 1250, name = "Ship Deckhand", position = Vector3.new(1218, 125, 4357)},
-    {level = 1500, name = "Ship Officer", position = Vector3.new(1218, 125, 4857)},
-    {level = 1750, name = "Zombie", position = Vector3.new(-5453, 5, -7717)},
-    {level = 2000, name = "Cyborg", position = Vector3.new(3840, 47, -6075)},
-    {level = 2500, name = "Sea Beast", position = Vector3.new(-5023, 4, 5902)}
+    -- Thêm các khu vực farm khác nếu cần
 }
 
+-- Hàm di chuyển nhân vật đến vị trí
 local function tweenToPosition(position)
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
@@ -280,7 +268,7 @@ local function tweenToPosition(position)
 
     if humanoidRootPart then
         local tweenInfo = TweenInfo.new(
-            (position - humanoidRootPart.Position).Magnitude / 50, -- Thời gian bay phụ thuộc vào khoảng cách
+            (position - humanoidRootPart.Position).Magnitude / 50, -- Tốc độ di chuyển
             Enum.EasingStyle.Linear
         )
         local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(position)})
@@ -289,6 +277,7 @@ local function tweenToPosition(position)
     end
 end
 
+-- Hàm tìm khu vực farm dựa trên level
 local function getCurrentArea(level)
     for i = #farmingAreas, 1, -1 do
         if level >= farmingAreas[i].level then
@@ -298,39 +287,22 @@ local function getCurrentArea(level)
     return farmingAreas[1]
 end
 
-local function attackEnemy(enemy)
-    if enemy and enemy:FindFirstChild("Humanoid") and enemy:FindFirstChild("HumanoidRootPart") then
-        local player = game.Players.LocalPlayer
-        -- Đánh từ xa
-        player.Character.HumanoidRootPart.CFrame = enemy.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
-        -- Tấn công liên tục
-        game.ReplicatedStorage.Remotes.CommF_:InvokeServer("AttackEnemy", enemy)
-        print("Đang tấn công: " .. enemy.Name)
-    end
-end
-
-local function findClosestEnemy()
+-- Hàm tấn công nhanh
+local function fastAttack()
     local player = game.Players.LocalPlayer
-    local closestEnemy = nil
-    local shortestDistance = math.huge
-
-    for _, enemy in pairs(workspace.Enemies:GetChildren()) do
-        if enemy:FindFirstChild("Humanoid") and enemy.Humanoid.Health > 0 then
-            local distance = (enemy.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
-            if distance < shortestDistance then
-                closestEnemy = enemy
-                shortestDistance = distance
-            end
+    game:GetService("RunService").Stepped:Connect(function()
+        if player and player.Character and player.Character:FindFirstChild("Combat") then
+            player.Character.Combat.HitBoxSize = Vector3.new(50, 50, 50) -- Tăng kích thước hitbox
+            player.Character.Combat.AttackSpeed = 1 -- Điều chỉnh tốc độ đánh
         end
-    end
-
-    return closestEnemy
+    end)
 end
 
+-- Hàm bắt đầu farm level
 local function startFarming()
     while isFarming do
         local player = game.Players.LocalPlayer
-        local level = player.Data.Level.Value -- Thay đổi thành thuộc tính cấp độ của bạn nếu cần
+        local level = player.Data.Level.Value -- Cập nhật level hiện tại của người chơi
         local currentArea = getCurrentArea(level)
 
         -- Di chuyển đến khu vực phù hợp
@@ -340,18 +312,30 @@ local function startFarming()
         end
 
         -- Tìm và tấn công quái
-        local enemy = findClosestEnemy()
-        if enemy then
-            attackEnemy(enemy)
+        local closestEnemy = nil
+        local shortestDistance = math.huge
+        for _, enemy in pairs(workspace.Enemies:GetChildren()) do
+            if enemy:FindFirstChild("Humanoid") and enemy.Humanoid.Health > 0 then
+                local distance = (enemy.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
+                if distance < shortestDistance then
+                    closestEnemy = enemy
+                    shortestDistance = distance
+                end
+            end
+        end
+
+        if closestEnemy then
+            player.Character.HumanoidRootPart.CFrame = closestEnemy.HumanoidRootPart.CFrame * CFrame.new(0, 0, -5)
+            game.ReplicatedStorage.Remotes.CommF_:InvokeServer("AttackEnemy", closestEnemy)
         else
             print("Không tìm thấy quái vật.")
         end
 
-        wait(0.5) -- Chờ 0.5 giây giữa mỗi vòng lặp
+        wait(0.5) -- Điều chỉnh thời gian chờ
     end
 end
 
--- Thêm Toggle để bật/tắt Farm
+-- Toggle bật/tắt farm level
 TabFarm:AddToggle({
     Title = "Bật/Tắt Farm Level",
     Default = false,
@@ -364,18 +348,13 @@ TabFarm:AddToggle({
     end
 })
 
--- Thêm Fast Attack
+-- Toggle bật/tắt fast attack
 TabFarm:AddToggle({
     Title = "Bật/Tắt Fast Attack",
     Default = false,
     Callback = function(Value)
-        local player = game.Players.LocalPlayer
         if Value then
-            game:GetService("RunService").Stepped:Connect(function()
-                if player and player.Character and player.Character:FindFirstChild("Combat") then
-                    player.Character.Combat.AttackSpeed = 10 -- Tăng tốc độ đánh
-                end
-            end)
+            fastAttack()
             print("Fast Attack: Bật")
         else
             print("Fast Attack: Tắt")
