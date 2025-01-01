@@ -253,6 +253,7 @@ local TabFarm = RimusHub:CreateTab({
     Icon = "rbxassetid://100756646036568"
 })
 
+local TweenService = game:GetService("TweenService")
 local isFarming = false -- Biến kiểm tra trạng thái farm
 local farmingAreas = {
     {level = 1, name = "Bandit", position = Vector3.new(1059, 16, 1532)},
@@ -272,9 +273,20 @@ local farmingAreas = {
     {level = 2500, name = "Sea Beast", position = Vector3.new(-5023, 4, 5902)}
 }
 
-local function teleportTo(position)
+local function tweenToPosition(position)
     local player = game.Players.LocalPlayer
-    player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+
+    if humanoidRootPart then
+        local tweenInfo = TweenInfo.new(
+            (position - humanoidRootPart.Position).Magnitude / 50, -- Thời gian bay phụ thuộc vào khoảng cách
+            Enum.EasingStyle.Linear
+        )
+        local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = CFrame.new(position)})
+        tween:Play()
+        tween.Completed:Wait()
+    end
 end
 
 local function getCurrentArea(level)
@@ -324,7 +336,7 @@ local function startFarming()
         -- Di chuyển đến khu vực phù hợp
         if (player.Character.HumanoidRootPart.Position - currentArea.position).Magnitude > 10 then
             print("Di chuyển đến: " .. currentArea.name)
-            teleportTo(currentArea.position)
+            tweenToPosition(currentArea.position)
         end
 
         -- Tìm và tấn công quái
