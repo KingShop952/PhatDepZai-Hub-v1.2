@@ -247,45 +247,62 @@ local AutoSgtButton = TabFarming:AddButton({
     end
 })
 
--- Thêm Tab Farm Level
+-- Tab Farm Level
 local TabFarm = RimusHub:CreateTab({
     Name = "Tab Farm Level",
     Icon = "rbxassetid://100756646036568"
 })
 
 local isFarming = false -- Biến kiểm tra trạng thái farm
-
--- Danh sách các bãi quái với cấp độ tương ứng
 local farmingAreas = {
-    {level = 1, name = "Bandit", position = Vector3.new(1059, 16, 1532)},    -- Bandit
-    {level = 15, name = "Monkey", position = Vector3.new(-1335, 6, 2323)},  -- Monkey
-    {level = 30, name = "Gorilla", position = Vector3.new(-1167, 6, 2146)}, -- Gorilla
-    {level = 50, name = "Pirate", position = Vector3.new(-1159, 43, 3829)}, -- Pirate
-    {level = 120, name = "Marine", position = Vector3.new(-4864, 6, 4285)}, -- Marine
-    {level = 220, name = "Yeti", position = Vector3.new(1407, 112, -1224)}, -- Yeti
-    {level = 300, name = "Sky Bandit", position = Vector3.new(-4958, 369, -2791)}, -- Sky Bandit
-    {level = 625, name = "Fishman", position = Vector3.new(6113, 6, -1642)}, -- Fishman
-    {level = 700, name = "Raider", position = Vector3.new(-5382, 6, 8416)}, -- Raider
-    {level = 850, name = "Mercenary", position = Vector3.new(-5405, 6, 9046)}, -- Mercenary
-    {level = 1250, name = "Ship Deckhand", position = Vector3.new(1218, 125, 4357)}, -- Ship Deckhand
-    {level = 1500, name = "Ship Officer", position = Vector3.new(1218, 125, 4857)}, -- Ship Officer
-    {level = 1750, name = "Zombie", position = Vector3.new(-5453, 5, -7717)}, -- Zombie
-    {level = 2000, name = "Cyborg", position = Vector3.new(3840, 47, -6075)}, -- Cyborg
-    {level = 2500, name = "Sea Beast", position = Vector3.new(-5023, 4, 5902)} -- Sea Beast
+    {level = 1, name = "Bandit", position = Vector3.new(1059, 16, 1532)},
+    {level = 15, name = "Monkey", position = Vector3.new(-1335, 6, 2323)},
+    {level = 30, name = "Gorilla", position = Vector3.new(-1167, 6, 2146)},
+    {level = 50, name = "Pirate", position = Vector3.new(-1159, 43, 3829)},
+    {level = 120, name = "Marine", position = Vector3.new(-4864, 6, 4285)},
+    {level = 220, name = "Yeti", position = Vector3.new(1407, 112, -1224)},
+    {level = 300, name = "Sky Bandit", position = Vector3.new(-4958, 369, -2791)},
+    {level = 625, name = "Fishman", position = Vector3.new(6113, 6, -1642)},
+    {level = 700, name = "Raider", position = Vector3.new(-5382, 6, 8416)},
+    {level = 850, name = "Mercenary", position = Vector3.new(-5405, 6, 9046)},
+    {level = 1250, name = "Ship Deckhand", position = Vector3.new(1218, 125, 4357)},
+    {level = 1500, name = "Ship Officer", position = Vector3.new(1218, 125, 4857)},
+    {level = 1750, name = "Zombie", position = Vector3.new(-5453, 5, -7717)},
+    {level = 2000, name = "Cyborg", position = Vector3.new(3840, 47, -6075)},
+    {level = 2500, name = "Sea Beast", position = Vector3.new(-5023, 4, 5902)}
 }
 
 local function teleportTo(position)
     local player = game.Players.LocalPlayer
     player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
-    wait(1) -- Đợi 1 giây sau khi dịch chuyển
+end
+
+local function getCurrentArea(level)
+    for i = #farmingAreas, 1, -1 do
+        if level >= farmingAreas[i].level then
+            return farmingAreas[i]
+        end
+    end
+    return farmingAreas[1]
+end
+
+local function attackEnemy(enemy)
+    if enemy and enemy:FindFirstChild("Humanoid") and enemy:FindFirstChild("HumanoidRootPart") then
+        local player = game.Players.LocalPlayer
+        -- Đánh từ xa
+        player.Character.HumanoidRootPart.CFrame = enemy.HumanoidRootPart.CFrame * CFrame.new(0, 0, -10)
+        -- Tấn công liên tục
+        game.ReplicatedStorage.Remotes.CommF_:InvokeServer("AttackEnemy", enemy)
+        print("Đang tấn công: " .. enemy.Name)
+    end
 end
 
 local function findClosestEnemy()
     local player = game.Players.LocalPlayer
-    local closestEnemy
+    local closestEnemy = nil
     local shortestDistance = math.huge
 
-    for _, enemy in pairs(game.Workspace.Enemies:GetChildren()) do
+    for _, enemy in pairs(workspace.Enemies:GetChildren()) do
         if enemy:FindFirstChild("Humanoid") and enemy.Humanoid.Health > 0 then
             local distance = (enemy.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
             if distance < shortestDistance then
@@ -298,60 +315,58 @@ local function findClosestEnemy()
     return closestEnemy
 end
 
-local function attackEnemy(enemy)
-    if enemy and enemy:FindFirstChild("Humanoid") then
-        game.ReplicatedStorage.Events.Combat:FireServer("Attack", enemy)
-        print("Đang tấn công quái vật: " .. enemy.Name)
-    end
-end
+local function startFarming()
+    while isFarming do
+        local player = game.Players.LocalPlayer
+        local level = player.Data.Level.Value -- Thay đổi thành thuộc tính cấp độ của bạn nếu cần
+        local currentArea = getCurrentArea(level)
 
-local function getCurrentArea(level)
-    for i = #farmingAreas, 1, -1 do
-        if level >= farmingAreas[i].level then
-            return farmingAreas[i]
+        -- Di chuyển đến khu vực phù hợp
+        if (player.Character.HumanoidRootPart.Position - currentArea.position).Magnitude > 10 then
+            print("Di chuyển đến: " .. currentArea.name)
+            teleportTo(currentArea.position)
         end
+
+        -- Tìm và tấn công quái
+        local enemy = findClosestEnemy()
+        if enemy then
+            attackEnemy(enemy)
+        else
+            print("Không tìm thấy quái vật.")
+        end
+
+        wait(0.5) -- Chờ 0.5 giây giữa mỗi vòng lặp
     end
-    return farmingAreas[1]
 end
 
-local ToggleFarm = TabFarm:AddToggle({
+-- Thêm Toggle để bật/tắt Farm
+TabFarm:AddToggle({
     Title = "Bật/Tắt Farm Level",
-    Default = false, -- Mặc định là tắt
+    Default = false,
     Callback = function(Value)
         isFarming = Value
-        print("Farm Level: " .. (isFarming and "Bật" or "Tắt"))
-
+        print("Trạng thái Farm Level: " .. (isFarming and "Bật" or "Tắt"))
         if isFarming then
-            coroutine.wrap(function()
-                while isFarming do
-                    local player = game.Players.LocalPlayer
-                    local level = player:FindFirstChild("Level") -- Thay "Level" thành đúng thuộc tính cấp độ trong game
-                    
-                    if level then
-                        local currentLevel = level.Value
-                        local currentArea = getCurrentArea(currentLevel)
+            startFarming()
+        end
+    end
+})
 
-                        -- Di chuyển đến khu vực phù hợp
-                        if (player.Character.HumanoidRootPart.Position - currentArea.position).Magnitude > 10 then
-                            print("Di chuyển đến: " .. currentArea.name)
-                            teleportTo(currentArea.position)
-                        end
-
-                        -- Tìm và tấn công quái vật
-                        local enemy = findClosestEnemy()
-                        if enemy then
-                            attackEnemy(enemy)
-                        else
-                            print("Không tìm thấy quái vật để farm.")
-                        end
-                    else
-                        print("Không tìm thấy thông tin level của bạn.")
-                        break
-                    end
-
-                    wait(1) -- Chờ 1 giây giữa các vòng lặp
+-- Thêm Fast Attack
+TabFarm:AddToggle({
+    Title = "Bật/Tắt Fast Attack",
+    Default = false,
+    Callback = function(Value)
+        local player = game.Players.LocalPlayer
+        if Value then
+            game:GetService("RunService").Stepped:Connect(function()
+                if player and player.Character and player.Character:FindFirstChild("Combat") then
+                    player.Character.Combat.AttackSpeed = 10 -- Tăng tốc độ đánh
                 end
-            end)()
+            end)
+            print("Fast Attack: Bật")
+        else
+            print("Fast Attack: Tắt")
         end
     end
 })
