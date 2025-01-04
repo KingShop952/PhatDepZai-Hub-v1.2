@@ -21,7 +21,7 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 
 local Window = Fluent:CreateWindow({
     Title = "PhatDepZai Hub | Blox Fruit",
-    SubTitle = "",
+    SubTitle = "phat",
     TabWidth = 160,
     Size = UDim2.fromOffset(600, 325),
     Acrylic = false,
@@ -30,16 +30,16 @@ local Window = Fluent:CreateWindow({
 })
 
 local Tabs = {
-    infor = Window:AddTab({ Title = "Tab Infor", Icon = "" }),
+    infor = Window:AddTab({ Title = "Tab bỏ con", Icon = "" }),
     Home = Window:AddTab({ Title = "Trạng thái", Icon = "" }),
     Main = Window:AddTab({ Title = "Chính", Icon = "" }),
     item = Window:AddTab({ Title = "Item Farm", Icon = "" }),
-    C = Window:AddTab({ Title = "Tab Combat", Icon = "" }),
+    C = Window:AddTab({ Title = "Tab pê vê pê", Icon = "" }),
     tele = Window:AddTab({ Title = "Tab đảo", Icon = "" }),
     an = Window:AddTab({ Title = "Misc Sever", Icon = "" }),
     Race = Window:AddTab({ Title = "Đảo bí ẩn + Tộc V4", Icon = "" }),
     Raid = Window:AddTab({ Title = "Raid-Fruit", Icon = "" }),
-    Melee = Window:AddTab({ Title = "Tab Shop", Icon = "" })
+    Melee = Window:AddTab({ Title = "Tab sộp", Icon = "" })
 }
 
 local Options = Fluent.Options
